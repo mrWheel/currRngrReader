@@ -1,0 +1,175 @@
+<!--
+***************************************************************************  
+**  Program  : index.html, part of CurrRngrReader
+**
+**  Copyright (c) 2021 Willem Aandewiel
+**
+**  TERMS OF USE: MIT License. See bottom of file.                                                            
+***************************************************************************      
+-->
+
+<!DOCTYPE html> 
+<html>
+  <head>
+    <meta http-equiv=refresh name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!--
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    -->
+    <script type = "text/JavaScript" src = "/moment.js"></script>
+    <link rel="stylesheet" type="text/css" href="/index.css">
+
+    <title>CurrentRanger Reader</title>
+  </head>
+
+  <body>
+  <div id="page-container">
+    <div id="content-wrap">
+      <span class="shadowed"; display:inline;>CurrentRanger Reader</span>
+      <span style="float:right;">
+      <span id="devName" style='font-size: 70%; display: inline;'>devName</span> &nbsp; &nbsp;
+      <span id="devIPaddress" style='font-size: 75%; display: inline;'>devIPaddress</span> &nbsp; &nbsp;
+      <span id="devVersion" style='font-size: 75%; display: inline;'>[version]</span>
+      </span>
+    </div>
+
+    <fieldset class="container">
+      <label for="DUTname">DUT name</label>
+      <span><input type='text' style='height:25px; font-size:15px;'  
+      		      id="DUTname" name='DUTname' placeholder='DUT name' 
+      		      required value='DUTname' maxlength='25'></span>
+      </br>
+      <label for="cutOffCurr">Cut Off Current</label>
+      <span><input type='number' style='height:25px; font-size:15px;'  
+      		      id="cutOffCurr" name='cutOffCurr' 
+      		      min="0" max="50" step="0.1" value="0"
+      		      required value='cutOffCurr' maxlength='5'></span>
+      <span> &nbsp; mA (start/stop recording)</span>
+      </br>
+      <label for="sleepCurr">Sleep Current</label>
+      <span><input type='number' style='height:25px; font-size:15px;'  
+      		      id="sleepCurr" name='sleepCurr' 
+      		      min="0" max="50" step="0.1" value="0"
+      		      required value='sleepCurr' maxlength='5'></span>
+      <span> &nbsp; mA (to calculate consumption after cycle)</span>
+      </br>
+      <span>
+        <!-- <label for="lowPass">Low Pass Filter</label> -->
+        Low Pass Filter
+        <input type='checkbox' class="largerCheckbox" id="lowPass" name='lowPass'> 
+        &nbsp; (filter spikes)
+      </span>
+      </br>
+      <label for="skipCurr">Skip Current</label>
+      <span><input type='number' style='height:25px; font-size:15px;'  
+      		      id="skipCurr" name='skipCurr' 
+      		      min="0" max="5000" step="100" value="0"
+      		      required value='skipCurr' maxlength='5'></span>
+      <span> &nbsp; mA (skip power spikes greater than)</span>
+      </br>
+   
+    </fieldset>
+    </br>
+    <hr>
+    <table>
+    <tr>
+    <td>
+    <div class="buttons">
+      <div class="action_btn">
+         <button id="startRec"    name="submit" class="action_btn submit" type="submit" disabled value="startRec">Start Recording</button></br>
+         <button id="stopRec"     name="submit" class="action_btn cancel" type="submit" disabled value="stopRec">Stop Recording</button></br>
+         <button id="listRec"     name="submit" class="action_btn cancel" type="submit" disabled value="listRec">List Recording</button></br>
+         <button id="analyzeRec"  name="submit" class="action_btn cancel" type="submit" disabled value="analyzeRec">Analyze Recording</button></br>
+         <button id="downloadDat" name="submit" class="action_btn cancel" type="submit" disabled value="analyzeRec">Download GNUPLOT</button></br>
+      </div>
+
+    </div>  <!-- class=buttons -->
+    </td><td id="gif">
+      <img id="spinWheel" width="70pt" src="/Spin-1s-100px.gif"/>
+    </td>
+    </table>
+    <hr>
+    <div id="resources"></div>
+
+    <!--<div style='width: 80%'>&nbsp;</div>-->
+
+      <table class="center">
+        <tr span="nowrap">
+            <th>Data Points</th>
+            <th align="center">Min.Curr.</th>
+            <th align="center">Max.Curr</th>
+            <th align="center">Time Span</th>
+            <th align="center">mA/h</th>
+      </tr><tr>
+          <td align="center" id="dataPoints">-</td>
+          <td align="center" id="minCurr">-</td>
+          <td align="center" id="maxCurr">-</td>
+          <td align="center" id="timeSpan">-</td>
+          <td align="center" id="cummPower">-</td>
+        </tr>
+      </table>
+      <hr>
+      <textarea id="logWindow" cols=60, rows=10></textarea>
+      <hr>
+      <div align='center'>
+        <span class='uitleg'>
+          Druk op [nA] en [uA] tegelijkertijd om het low-pass filter van de CR in te schakelen!
+          <p>
+          Na data-collection gnuplot.p file downloaden.</br>
+          Dan intoetsen: "<b>gnuplot gnuplot_&lt;Date/Time&gt;.p</b>"<br>
+          Plot file heet "<b>currRngr.png</b>"
+        </span>
+      </div>
+    </div> <!-- content-wrap -->
+ 
+    <footer id="message">initializing</footer>
+
+     <footer id="footer">2021 &copy; Willem Aandewiel &nbsp; &nbsp; &nbsp;</footer>
+     
+    </div>  <!-- page container -->
+
+    <!-- download Logfile -->
+    <!--
+    <div class="data">
+      <div class="side-by-side">Download logFile</div>
+      <div class="side-by-side icon">
+        <img id="downloadLog" src="/icons8-rescan-document-80.png" alt="Download" width="35" height="35">
+      </div>
+    </div>
+    -->
+    
+  <!--</div>  <!-- endof webpage --> 
+
+  <!-- KEEP THIS --->
+  <!--
+  <footer>
+    <div class="content right">2020 &copy; Willem Aandewiel &nbsp; &nbsp; &nbsp;</div>
+  </footer>
+  -->
+  <script src="/index.js"></script>
+
+  </body>
+</html>
+<!--
+***************************************************************************
+*
+* Permission is hereby granted, free of charge, to any person obtaining a
+* copy of this software and associated documentation files (the
+* "Software"), to deal in the Software without restriction, including
+* without limitation the rights to use, copy, modify, merge, publish,
+* distribute, sublicense, and/or sell copies of the Software, and to permit
+* persons to whom the Software is furnished to do so, subject to the
+* following conditions:
+*
+* The above copyright notice and this permission notice shall be included
+* in all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
+* OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+* THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+* 
+***************************************************************************
+-->
